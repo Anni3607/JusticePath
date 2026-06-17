@@ -14,7 +14,6 @@ from PyPDF2 import PdfReader
 
 st.set_page_config(
     page_title="JusticePath | AI Legal Navigator",
-    page_icon="⚖️",
     layout="wide"
 )
 
@@ -61,9 +60,10 @@ st.markdown("""
         align-items: center;
     }
     .feature-list li::before {
-        content: "⚡";
+        content: "-";
         margin-right: 12px;
         font-size: 0.9rem;
+        color: #58a6ff;
     }
     
     /* Gradient App Headers */
@@ -396,12 +396,12 @@ with st.sidebar:
     page = st.radio(
         "Navigate Platform",
         [
-            "🏠 Home",
-            "🔍 Rights Explorer",
-            "🛡️ Legal Problem Analyzer",
-            "📝 Complaint Generator",
-            "💡 Legal Simplifier",
-            "🤖 RAG Legal Assistant"
+            "Home",
+            "Rights Explorer",
+            "Legal Problem Analyzer",
+            "Complaint Generator",
+            "Legal Simplifier",
+            "RAG Legal Assistant"
         ]
     )
 
@@ -409,9 +409,9 @@ with st.sidebar:
 # MODULE 1: HOME
 # =====================================================
 
-if "Home" in page:
+if page == "Home":
     st.markdown('<h1 class="gradient-text" style="font-size: 3rem; margin-bottom: 0px;">JusticePath</h1>', unsafe_allow_html=True)
-    st.markdown('<p style="font-size: 1.3rem; color: #8b949e; margin-top: 5px;">AI-Powered Legal Navigation & Awareness Framework</p>', unsafe_allow_html=True)
+    st.markdown('<p style="font-size: 1.3rem; color: #8b949e; margin-top: 5px;">AI-Powered Legal Navigation and Awareness Framework</p>', unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     
@@ -421,7 +421,7 @@ if "Home" in page:
             <h3 style="color: #58a6ff; margin-top:0;">Empowering Citizen Rights</h3>
             <p style="color: #c9d1d9;">JusticePath bridges the gap between complex constitutional legal frameworks and everyday citizens, giving you tools to navigate unexpected legal problems easily.</p>
             <ul class="feature-list">
-                <li>Instantly query & filter constitutional and consumer rights.</li>
+                <li>Instantly query and filter constitutional and consumer rights.</li>
                 <li>Analyze real-world situations to extract clear legal categorization.</li>
                 <li>Identify exact governing authorities for faster reporting lines.</li>
             </ul>
@@ -446,14 +446,14 @@ if "Home" in page:
     <div class="disclaimer-text">
         <strong>Disclaimer Notice:</strong> This software architecture platform provides educational, general knowledge resources compiled programmatically via retrieval models. It does not provide actionable legal representation, certified legal advice, or professional corporate counsel under judicial practice standards.
     </div>
-    """, unsafe_html=True)
+    """, unsafe_allow_html=True)
 
 # =====================================================
 # MODULE 2: RIGHTS EXPLORER
 # =====================================================
 
-elif "Rights Explorer" in page:
-    st.markdown('<h1 class="gradient-text">🔍 Rights Explorer</h1>', unsafe_allow_html=True)
+elif page == "Rights Explorer":
+    st.markdown('<h1 class="gradient-text">Rights Explorer</h1>', unsafe_allow_html=True)
     st.markdown("Select a legal category below to browse through indexed citizen rights and regulatory bodies.")
     
     categories = get_categories()
@@ -463,12 +463,12 @@ elif "Rights Explorer" in page:
     rights = get_rights_by_category(selected_category)
     
     for item in rights:
-        with st.expander(f"📋 {item['right_name']}", expanded=False):
+        with st.expander(f"Right: {item['right_name']}", expanded=False):
             st.markdown(f"**Description:** \n{item['description']}")
             st.markdown(f"📌 **Primary Enforcement Authority:** `{item['authority']}`")
             
             if "laws" in item and item["laws"]:
-                st.markdown("**Statutory Frameworks & Laws:**")
+                st.markdown("**Statutory Frameworks and Laws:**")
                 for law in item["laws"]:
                     st.markdown(f"- `<code style='color:#ff7b72'>{law}</code>`", unsafe_allow_html=True)
 
@@ -476,33 +476,33 @@ elif "Rights Explorer" in page:
 # MODULE 3: LEGAL PROBLEM ANALYZER
 # =====================================================
 
-elif "Legal Problem Analyzer" in page:
-    st.markdown('<h1 class="gradient-text">🛡️ Legal Problem Analyzer</h1>', unsafe_allow_html=True)
+elif page == "Legal Problem Analyzer":
+    st.markdown('<h1 class="gradient-text">Legal Problem Analyzer</h1>', unsafe_allow_html=True)
     st.markdown("Input your current circumstances or problem details below. The heuristic model will classify the focus and generate structured preparation strategies.")
 
-    issue = st.text_area("Describe the dispute context or incident thoroughly:", placeholder="Ex: My landlord is forcing immediate eviction notice without paying back security deposits...")
+    issue = st.text_area("Describe the dispute context or incident thoroughly:", placeholder="Example: My landlord is forcing immediate eviction notice without paying back security deposits...")
     
     if st.button("Execute Diagnostic Analysis", type="primary"):
         if issue.strip():
-            with st.spinner("Classifying contexts & generating roadmaps..."):
+            with st.spinner("Classifying contexts and generating roadmaps..."):
                 category = classify_issue(issue)
                 evidence = generate_evidence_checklist(issue)
                 authorities = find_relevant_authorities(issue)
                 roadmap = generate_action_roadmap(issue)
                 
-            st.toast("Analysis Completed Successfully!", icon="✅")
+            st.toast("Analysis Completed Successfully!")
             
             col_left, col_right = st.columns([1, 2])
             with col_left:
                 st.markdown("### Classified Category")
-                st.info(f"⚖️ {category}")
+                st.info(category)
                 
                 st.markdown("### Relevant Authorities")
                 for item in authorities:
-                    st.markdown(f"🏛️ **{item}**")
+                    st.markdown(f"**{item}**")
             
             with col_right:
-                tab1, tab2 = st.tabs(["📋 Vital Evidence Checklist", "🗺️ Action Roadmap"])
+                tab1, tab2 = st.tabs(["Vital Evidence Checklist", "Action Roadmap"])
                 
                 with tab1:
                     st.markdown("Ensure you collect and safeguard the following records:")
@@ -520,11 +520,11 @@ elif "Legal Problem Analyzer" in page:
 # MODULE 4: COMPLAINT GENERATOR
 # =====================================================
 
-elif "Complaint Generator" in page:
-    st.markdown('<h1 class="gradient-text">📝 Formal Complaint Generator</h1>', unsafe_allow_html=True)
+elif page == "Complaint Generator":
+    st.markdown('<h1 class="gradient-text">Formal Complaint Generator</h1>', unsafe_allow_html=True)
     st.markdown("Draft structured legal complaint templates automatically according to your specific grievance variables.")
 
-    issue = st.text_area("Provide specific details for the complaint draft:", placeholder="Ex: Defective transmission delivered on ecommerce invoice order #902341...")
+    issue = st.text_area("Provide specific details for the complaint draft:", placeholder="Example: Defective transmission delivered on ecommerce invoice order...")
     
     if st.button("Generate Document Package", type="primary"):
         if issue.strip():
@@ -537,7 +537,7 @@ elif "Complaint Generator" in page:
             
             with open(pdf_file, "rb") as file:
                 st.download_button(
-                    label="📥 Download Ready-To-Print PDF Document",
+                    label="Download Ready-To-Print PDF Document",
                     data=file,
                     file_name="JusticePath_Official_Complaint.pdf",
                     mime="application/pdf",
@@ -550,15 +550,15 @@ elif "Complaint Generator" in page:
 # MODULE 5: LEGAL SIMPLIFIER
 # =====================================================
 
-elif "Legal Simplifier" in page:
-    st.markdown('<h1 class="gradient-text">💡 Legal Language Simplifier</h1>', unsafe_allow_html=True)
+elif page == "Legal Simplifier":
+    st.markdown('<h1 class="gradient-text">Legal Language Simplifier</h1>', unsafe_allow_html=True)
     st.markdown("Deconstruct dense multi-layered legal terminology or regulatory briefs into scannable clear takeaways instantly.")
 
     u1, u2 = st.columns(2)
     with u1:
         uploaded_file = st.file_uploader("Option A: Upload Source PDF File Document", type=["pdf"])
     with u2:
-        pasted_text = st.text_area("Option B: Paste Raw Legal Contracts/Clauses here", height=125)
+        pasted_text = st.text_area("Option B: Paste Raw Legal Contracts or Clauses here", height=125)
 
     if st.button("Simplify Language Structure", type="primary"):
         text = ""
@@ -572,7 +572,7 @@ elif "Legal Simplifier" in page:
             with st.spinner("Processing plain language transcription..."):
                 result = simplify_legal_text(text)
                 
-            st.markdown("### ✨ Translated Plain English Summary")
+            st.markdown("### Translated Plain English Summary")
             st.markdown(f'<div class="feature-card">{result}</div>', unsafe_allow_html=True)
         else:
             st.error("Please supply text variables through either the file upload utility or copy-paste field parameters.")
@@ -581,15 +581,15 @@ elif "Legal Simplifier" in page:
 # MODULE 6: RAG LEGAL ASSISTANT
 # =====================================================
 
-elif "RAG Legal Assistant" in page:
-    st.markdown('<h1 class="gradient-text">🤖 Vector-Grounded RAG Legal Assistant</h1>', unsafe_allow_html=True)
+elif page == "RAG Legal Assistant":
+    st.markdown('<h1 class="gradient-text">Vector-Grounded RAG Legal Assistant</h1>', unsafe_allow_html=True)
     st.markdown("Query the active context vectors seamlessly. Answers are mapped directly to corresponding database elements to guarantee validation accuracy.")
 
-    query = st.text_input("Enter your direct legal query:", placeholder="Ex: What fallback options exist if an online portal scams payment profiles?")
+    query = st.text_input("Enter your direct legal query:", placeholder="Example: What fallback options exist if an online portal scams payment profiles?")
     
     if st.button("Query Knowledge Vectors", type="primary"):
         if query.strip():
-            with st.spinner("Scanning dense FAISS index vectors & computing contextual frames..."):
+            with st.spinner("Scanning dense FAISS index vectors and computing contextual frames..."):
                 answer = rag_legal_analyzer(query)
                 
             st.markdown("### System Response Guidance")
