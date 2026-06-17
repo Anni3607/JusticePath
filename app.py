@@ -389,7 +389,7 @@ Keep response concise."""
 # =====================================================
 
 with st.sidebar:
-    st.markdown('<h1 class="gradient-text" style="font-size: 2.2rem; margin-bottom: 0.5rem;">JusticePath</h1>', unsafe_html=True)
+    st.markdown('<h1 class="gradient-text" style="font-size: 2.2rem; margin-bottom: 0.5rem;">JusticePath</h1>', unsafe_allow_html=True)
     st.caption("AI-Powered Citizens' Legal Co-Pilot")
     st.markdown("---")
     
@@ -410,8 +410,8 @@ with st.sidebar:
 # =====================================================
 
 if "Home" in page:
-    st.markdown('<h1 class="gradient-text" style="font-size: 3rem; margin-bottom: 0px;">JusticePath</h1>', unsafe_html=True)
-    st.markdown('<p style="font-size: 1.3rem; color: #8b949e; margin-top: 5px;">AI-Powered Legal Navigation & Awareness Framework</p>', unsafe_html=True)
+    st.markdown('<h1 class="gradient-text" style="font-size: 3rem; margin-bottom: 0px;">JusticePath</h1>', unsafe_allow_html=True)
+    st.markdown('<p style="font-size: 1.3rem; color: #8b949e; margin-top: 5px;">AI-Powered Legal Navigation & Awareness Framework</p>', unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     
@@ -426,7 +426,7 @@ if "Home" in page:
                 <li>Identify exact governing authorities for faster reporting lines.</li>
             </ul>
         </div>
-        """, unsafe_html=True)
+        """, unsafe_allow_html=True)
         
     with col2:
         st.markdown("""
@@ -440,7 +440,7 @@ if "Home" in page:
                 <li>RAG-augmented answers grounded strictly in master knowledge base vectors.</li>
             </ul>
         </div>
-        """, unsafe_html=True)
+        """, unsafe_allow_html=True)
 
     st.markdown("""
     <div class="disclaimer-text">
@@ -453,7 +453,7 @@ if "Home" in page:
 # =====================================================
 
 elif "Rights Explorer" in page:
-    st.markdown('<h1 class="gradient-text">🔍 Rights Explorer</h1>', unsafe_html=True)
+    st.markdown('<h1 class="gradient-text">🔍 Rights Explorer</h1>', unsafe_allow_html=True)
     st.markdown("Select a legal category below to browse through indexed citizen rights and regulatory bodies.")
     
     categories = get_categories()
@@ -470,14 +470,14 @@ elif "Rights Explorer" in page:
             if "laws" in item and item["laws"]:
                 st.markdown("**Statutory Frameworks & Laws:**")
                 for law in item["laws"]:
-                    st.markdown(f"- `<code style='color:#ff7b72'>{law}</code>`", unsafe_html=True)
+                    st.markdown(f"- `<code style='color:#ff7b72'>{law}</code>`", unsafe_allow_html=True)
 
 # =====================================================
 # MODULE 3: LEGAL PROBLEM ANALYZER
 # =====================================================
 
 elif "Legal Problem Analyzer" in page:
-    st.markdown('<h1 class="gradient-text">🛡️ Legal Problem Analyzer</h1>', unsafe_html=True)
+    st.markdown('<h1 class="gradient-text">🛡️ Legal Problem Analyzer</h1>', unsafe_allow_html=True)
     st.markdown("Input your current circumstances or problem details below. The heuristic model will classify the focus and generate structured preparation strategies.")
 
     issue = st.text_area("Describe the dispute context or incident thoroughly:", placeholder="Ex: My landlord is forcing immediate eviction notice without paying back security deposits...")
@@ -492,8 +492,8 @@ elif "Legal Problem Analyzer" in page:
                 
             st.toast("Analysis Completed Successfully!", icon="✅")
             
-            c1, c2 = st.columns([1, 2])
-            with c1:
+            col_left, col_right = st.columns([1, 2])
+            with col_left:
                 st.markdown("### Classified Category")
                 st.info(f"⚖️ {category}")
                 
@@ -501,7 +501,7 @@ elif "Legal Problem Analyzer" in page:
                 for item in authorities:
                     st.markdown(f"🏛️ **{item}**")
             
-            with c2:
+            with col_right:
                 tab1, tab2 = st.tabs(["📋 Vital Evidence Checklist", "🗺️ Action Roadmap"])
                 
                 with tab1:
@@ -521,7 +521,7 @@ elif "Legal Problem Analyzer" in page:
 # =====================================================
 
 elif "Complaint Generator" in page:
-    st.markdown('<h1 class="gradient-text">📝 Formal Complaint Generator</h1>', unsafe_html=True)
+    st.markdown('<h1 class="gradient-text">📝 Formal Complaint Generator</h1>', unsafe_allow_html=True)
     st.markdown("Draft structured legal complaint templates automatically according to your specific grievance variables.")
 
     issue = st.text_area("Provide specific details for the complaint draft:", placeholder="Ex: Defective transmission delivered on ecommerce invoice order #902341...")
@@ -551,7 +551,7 @@ elif "Complaint Generator" in page:
 # =====================================================
 
 elif "Legal Simplifier" in page:
-    st.markdown('<h1 class="gradient-text">💡 Legal Language Simplifier</h1>', unsafe_html=True)
+    st.markdown('<h1 class="gradient-text">💡 Legal Language Simplifier</h1>', unsafe_allow_html=True)
     st.markdown("Deconstruct dense multi-layered legal terminology or regulatory briefs into scannable clear takeaways instantly.")
 
     u1, u2 = st.columns(2)
@@ -573,7 +573,7 @@ elif "Legal Simplifier" in page:
                 result = simplify_legal_text(text)
                 
             st.markdown("### ✨ Translated Plain English Summary")
-            st.markdown(f'<div class="feature-card">{result}</div>', unsafe_html=True)
+            st.markdown(f'<div class="feature-card">{result}</div>', unsafe_allow_html=True)
         else:
             st.error("Please supply text variables through either the file upload utility or copy-paste field parameters.")
 
@@ -582,7 +582,7 @@ elif "Legal Simplifier" in page:
 # =====================================================
 
 elif "RAG Legal Assistant" in page:
-    st.markdown('<h1 class="gradient-text">🤖 Vector-Grounded RAG Legal Assistant</h1>', unsafe_html=True)
+    st.markdown('<h1 class="gradient-text">🤖 Vector-Grounded RAG Legal Assistant</h1>', unsafe_allow_html=True)
     st.markdown("Query the active context vectors seamlessly. Answers are mapped directly to corresponding database elements to guarantee validation accuracy.")
 
     query = st.text_input("Enter your direct legal query:", placeholder="Ex: What fallback options exist if an online portal scams payment profiles?")
@@ -593,6 +593,6 @@ elif "RAG Legal Assistant" in page:
                 answer = rag_legal_analyzer(query)
                 
             st.markdown("### System Response Guidance")
-            st.markdown(f'<div class="feature-card" style="border-left: 4px solid #58a6ff;">{answer}</div>', unsafe_html=True)
+            st.markdown(f'<div class="feature-card" style="border-left: 4px solid #58a6ff;">{answer}</div>', unsafe_allow_html=True)
         else:
             st.warning("Please type a clear operational question phrase.")
