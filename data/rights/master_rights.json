@@ -1,0 +1,110 @@
+[
+    {
+        "category": "Tenant Rights",
+        "right_name": "Protection Against Illegal Eviction",
+        "description": "Tenants cannot be unlawfully evicted.",
+        "laws": [
+            "State Rent Control Laws"
+        ],
+        "authority": "Civil Court"
+    },
+    {
+        "category": "Tenant Rights",
+        "right_name": "Security Deposit Protection",
+        "description": "Tenants may seek return of security deposits.",
+        "laws": [
+            "Rental Agreement"
+        ],
+        "authority": "Civil Court"
+    },
+    {
+        "category": "Employment Rights",
+        "right_name": "Salary Non-Payment",
+        "description": "Employees are entitled to agreed wages.",
+        "laws": [
+            "Code on Wages, 2019"
+        ],
+        "authority": "Labour Commissioner"
+    },
+    {
+        "category": "Employment Rights",
+        "right_name": "Workplace Harassment Complaint",
+        "description": "Employees may report workplace harassment.",
+        "laws": [
+            "POSH Act, 2013"
+        ],
+        "authority": "Internal Complaints Committee"
+    },
+    {
+        "category": "Consumer Rights",
+        "right_name": "Defective Product Protection",
+        "description": "Consumers can seek replacement or refund for defective products.",
+        "laws": [
+            "Consumer Protection Act, 2019"
+        ],
+        "authority": "Consumer Commission"
+    },
+    {
+        "category": "Consumer Rights",
+        "right_name": "Protection Against Misleading Ads",
+        "description": "Consumers have protection against false advertisements.",
+        "laws": [
+            "Consumer Protection Act, 2019"
+        ],
+        "authority": "Consumer Commission"
+    },
+    {
+        "category": "Cybercrime Rights",
+        "right_name": "Online Fraud Reporting",
+        "description": "Victims of online scams can report cybercrime.",
+        "laws": [
+            "Information Technology Act, 2000"
+        ],
+        "authority": "National Cyber Crime Portal"
+    },
+    {
+        "category": "Cybercrime Rights",
+        "right_name": "Identity Theft Protection",
+        "description": "Citizens can report misuse of personal data.",
+        "laws": [
+            "Information Technology Act, 2000"
+        ],
+        "authority": "Cyber Crime Cell"
+    },
+    {
+        "category": "Education Rights",
+        "right_name": "Right to Education",
+        "description": "Children have access to elementary education.",
+        "laws": [
+            "RTE Act, 2009"
+        ],
+        "authority": "Education Department"
+    },
+    {
+        "category": "Education Rights",
+        "right_name": "Fair Examination Process",
+        "description": "Students have rights regarding fair evaluation.",
+        "laws": [
+            "University Regulations"
+        ],
+        "authority": "University Authorities"
+    },
+    {
+        "category": "Constitutional Rights",
+        "right_name": "Right to Equality",
+        "description": "Citizens are equal before law.",
+        "laws": [
+            "Article 14"
+        ],
+        "authority": "Courts"
+    },
+    {
+        "category": "Constitutional Rights",
+        "right_name": "Freedom of Speech",
+        "description": "Citizens have freedom of expression.",
+        "laws": [
+            "Article 19"
+        ],
+        "authority": "Courts"
+    }
+]
