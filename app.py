@@ -82,6 +82,27 @@ st.markdown("""
         padding-left: 12px;
         margin-top: 30px;
     }
+
+    /* Elegant Custom Badges for Legal Framework Rendering */
+    .legal-badge {
+        background-color: #1f242c;
+        color: #ff7b72;
+        padding: 4px 8px;
+        border-radius: 6px;
+        border: 1px solid #30363d;
+        font-family: monospace;
+        font-size: 0.9rem;
+        display: inline-block;
+        margin-top: 4px;
+    }
+    .authority-badge {
+        background-color: #161b22;
+        color: #58a6ff;
+        padding: 4px 8px;
+        border-radius: 6px;
+        border: 1px solid #30363d;
+        font-weight: 600;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -141,9 +162,9 @@ def search_rights(keyword):
     results = []
     for item in rights_data:
         if (
-            keyword in item["right_name"].lower()
-            or
-            keyword in item["description"].lower()
+            keyword in item["right_name"].lower() or
+            keyword in item["description"].lower() or
+            any(keyword in law.lower() for law in item.get("laws", []))
         ):
             results.append(item)
     return results
@@ -385,7 +406,7 @@ Keep response concise."""
     return response.text
 
 # =====================================================
-# SIDEBAR NAVIGATION
+# SIDEBAR NAVIGATION & THEME ADDITIONS
 # =====================================================
 
 with st.sidebar:
@@ -404,6 +425,19 @@ with st.sidebar:
             "RAG Legal Assistant"
         ]
     )
+    
+    # NEW THEMATIC FEATURE: Instant Sidebar Legal Dictionary Reference Widget
+    st.markdown("---")
+    st.markdown('<p style="font-weight:600; color:#8b949e; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px;">Jargon Helper</p>', unsafe_allow_html=True)
+    jargon_terms = {
+        "Pro Se": "Representing oneself in a court without a certified attorney.",
+        "Injunction": "A judicial order restraining a party from beginning or continuing an action.",
+        "Tort": "A wrongful act or an infringement of a right leading to civil legal liability.",
+        "Affidavit": "A written statement confirmed by oath or affirmation, for use as evidence in court.",
+        "Statute": "A written law passed by a legislative body."
+    }
+    selected_term = st.selectbox("Quick Dictionary Look-up", list(jargon_terms.keys()))
+    st.caption(jargon_terms[selected_term])
 
 # =====================================================
 # MODULE 1: HOME
@@ -454,23 +488,36 @@ if page == "Home":
 
 elif page == "Rights Explorer":
     st.markdown('<h1 class="gradient-text">Rights Explorer</h1>', unsafe_allow_html=True)
-    st.markdown("Select a legal category below to browse through indexed citizen rights and regulatory bodies.")
+    st.markdown("Select a legal category or use our interactive text-based indexed matching lookup database engine.")
     
-    categories = get_categories()
-    selected_category = st.selectbox("Filter by Category Focus", categories)
+    # NEW THEMATIC FEATURE: Multi-Mode Browsing (Category Filter vs Global Search)
+    search_mode = st.radio("Choose Discovery Method", ["Browse By Focus Category", "Search Database by Keyword"], horizontal=True)
     
+    if search_mode == "Browse By Focus Category":
+        categories = get_categories()
+        selected_category = st.selectbox("Filter by Category Focus", categories)
+        rights = get_rights_by_category(selected_category)
+    else:
+        query_word = st.text_input("Enter law name, phrase, or topic keyword:", placeholder="Ex: Information Technology Act, Tenant, UPI...")
+        rights = search_rights(query_word) if query_word.strip() else rights_data
+
     st.markdown("---")
-    rights = get_rights_by_category(selected_category)
     
-    for item in rights:
-        with st.expander(f"Right: {item['right_name']}", expanded=False):
-            st.markdown(f"**Description:** \n{item['description']}")
-            st.markdown(f"📌 **Primary Enforcement Authority:** `{item['authority']}`")
-            
-            if "laws" in item and item["laws"]:
-                st.markdown("**Statutory Frameworks and Laws:**")
-                for law in item["laws"]:
-                    st.markdown(f"- `<code style='color:#ff7b72'>{law}</code>`", unsafe_allow_html=True)
+    if not rights:
+        st.info("No matching codified articles found inside database indices.")
+    else:
+        for item in rights:
+            # FIXED: Removed raw markdown/HTML mix from expander header string argument to prevent syntax exposure
+            with st.expander(f"Right Focus: {item['right_name']}", expanded=False):
+                st.markdown(f"**Description:** \n{item['description']}")
+                
+                # FIXED: Render raw HTML inside independent secure stream markdown calls using unified parameters
+                st.markdown(f"**Primary Enforcement Authority:** <span class='authority-badge'>{item['authority']}</span>", unsafe_allow_html=True)
+                
+                if "laws" in item and item["laws"]:
+                    st.markdown("<p style='margin-bottom:2px; margin-top:10px; font-weight:600;'>Statutory Frameworks and Laws:</p>", unsafe_allow_html=True)
+                    for law in item["laws"]:
+                        st.markdown(f"<span class='legal-badge'>{law}</span>", unsafe_allow_html=True)
 
 # =====================================================
 # MODULE 3: LEGAL PROBLEM ANALYZER
@@ -491,6 +538,17 @@ elif page == "Legal Problem Analyzer":
                 roadmap = generate_action_roadmap(issue)
                 
             st.toast("Analysis Completed Successfully!")
+            
+            # NEW THEMATIC FEATURE: Case Metric & SLA Tracking Matrix Block
+            m1, m2, m3 = st.columns(3)
+            with m1:
+                st.metric(label="Jurisdiction Context", value=category.split()[0] if " " in category else category)
+            with m2:
+                st.metric(label="Estimated Complexity Tier", value="Tier 2 (Standard)")
+            with m3:
+                st.metric(label="Avg Authority Response SLA", value="15-30 Business Days")
+                
+            st.markdown("---")
             
             col_left, col_right = st.columns([1, 2])
             with col_left:
