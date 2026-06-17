@@ -83,7 +83,7 @@ st.markdown("""
         margin-top: 30px;
     }
     </style>
-""", unsafe_unsafe_with_style=True)
+""", unsafe_allow_html=True)
 
 # =====================================================
 # GEMINI SETUP
@@ -413,7 +413,6 @@ if "Home" in page:
     st.markdown('<h1 class="gradient-text" style="font-size: 3rem; margin-bottom: 0px;">JusticePath</h1>', unsafe_html=True)
     st.markdown('<p style="font-size: 1.3rem; color: #8b949e; margin-top: 5px;">AI-Powered Legal Navigation & Awareness Framework</p>', unsafe_html=True)
     
-    # Grid system for metrics or features setup
     col1, col2 = st.columns(2)
     
     with col1:
@@ -493,7 +492,6 @@ elif "Legal Problem Analyzer" in page:
                 
             st.toast("Analysis Completed Successfully!", icon="✅")
             
-            # Interactive visualization of categorized response
             c1, c2 = st.columns([1, 2])
             with c1:
                 st.markdown("### Classified Category")
