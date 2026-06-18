@@ -369,10 +369,24 @@ Sincerely,
     return complaint
 
 # =====================================================
-# PDF EXPORT
+# PDF EXPORT (SANITAION FIXES APPLIED)
 # =====================================================
 
 def export_complaint_pdf(complaint_text):
+    # Sanitize and replace Unicode characters that crash Latin-1 FPDF encodings
+    complaint_text = (
+        complaint_text
+        .replace("₹", "Rs.")
+        .replace("•", "-")
+        .replace("—", "-")
+        .replace("–", "-")
+    )
+    
+    complaint_text = complaint_text.encode(
+        "latin-1", 
+        "replace"
+    ).decode("latin-1")
+
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
@@ -502,7 +516,6 @@ with st.sidebar:
     st.caption("AI-Powered Citizens' Legal Co-Pilot")
     st.markdown("---")
     
-    # NAVIGATION UPDATED: Renamed Smart Question AI module to Legal Research Assistant
     page = st.radio(
         "Navigate Platform",
         [
@@ -545,7 +558,6 @@ if page == "Home Dashboard":
     st.markdown('<h1 class="gradient-text" style="font-size: 3rem; margin-bottom: 0px;">JusticePath</h1>', unsafe_allow_html=True)
     st.markdown('<p style="font-size: 1.3rem; color: #8b949e; margin-top: 5px;">Your Simple AI Tool to Understand Everyday Rights and Paperwork</p>', unsafe_allow_html=True)
     
-    # IMPROVEMENT 2: Statistic Section Added on Home Panel Dashboard Layout
     st.markdown("### Platform Availability Snapshot")
     stat_col1, stat_col2, stat_col3, stat_col4 = st.columns(4)
     with stat_col1:
@@ -593,7 +605,6 @@ if page == "Home Dashboard":
     </div>
     """, unsafe_allow_html=True)
 
-    # IMPROVEMENT 3: System Sign-off Footer Inclusion
     st.markdown("""
     <div class="app-footer">
         JusticePath © 2026<br>
@@ -683,7 +694,6 @@ elif page == "Problem Analyzer & Helper":
                 
             st.markdown("---")
             
-            # IMPROVEMENT 1: Results structured inside unified modular styled container cards
             col_left, col_right = st.columns([1, 2])
             with col_left:
                 st.markdown(f"""
@@ -791,7 +801,6 @@ elif page == "Document Language Simplifier":
 # =====================================================
 
 elif page == "Legal Research Assistant":
-    # IMPROVEMENT 4: Feature Module Header Renamed to Legal Research Assistant
     st.markdown('<h1 class="gradient-text">Legal Research Assistant</h1>', unsafe_allow_html=True)
     st.markdown("Query the active context vectors seamlessly. Answers are mapped directly to corresponding database elements to guarantee validation accuracy.")
 
