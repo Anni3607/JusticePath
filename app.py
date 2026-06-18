@@ -13,7 +13,7 @@ from PyPDF2 import PdfReader
 # =====================================================
 
 st.set_page_config(
-    page_title="JusticePath | AI Legal Navigator",
+    page_title="JusticePath | Simple AI Legal Guide",
     layout="wide"
 )
 
@@ -252,33 +252,39 @@ def generate_action_roadmap(user_issue):
     return roadmap_templates.get(category, [])
 
 # =====================================================
-# COMPLAINT GENERATOR
+# COMPLAINT GENERATOR WITH INTERACTIVE DATA OVERLAYS
 # =====================================================
 
-def generate_complaint(user_issue):
+def generate_complaint(user_issue, citizen_name="Citizen", date_str="As Applicable", contact_info=""):
     category = classify_issue(user_issue)
     authorities = find_relevant_authorities(user_issue)
     authority = authorities[0] if authorities else "Concerned Authority"
+    
+    contact_block = f"\nContact Info: {contact_info}" if contact_info else ""
 
-    complaint = f"""To,
+    complaint = f"""Date: {date_str}
+
+To,
 {authority}
 
-Subject: Complaint regarding {category}
+Subject: Formal Grievance and Complaint regarding {category}
 
 Respected Sir/Madam,
 
-I wish to submit a complaint regarding the following issue:
+I am writing to formally submit a grievance regarding the following event:
 
 {user_issue}
 
-I request your office to examine the matter and take appropriate action as per applicable laws.
+I request your office to look into this matter and take appropriate action as per applicable rules and laws.
 
-I am willing to provide supporting evidence and cooperate fully with any investigation.
+I am holding onto supporting proof and evidence and I am ready to cooperate with any check or investigation.
 
 Thank you.
 
 Sincerely,
-Citizen"""
+
+{citizen_name}{contact_block}
+"""
     return complaint
 
 # =====================================================
@@ -414,50 +420,61 @@ with st.sidebar:
     st.caption("AI-Powered Citizens' Legal Co-Pilot")
     st.markdown("---")
     
+    # Simplified Navigation Titles for Easy Understanding
     page = st.radio(
         "Navigate Platform",
         [
-            "Home",
-            "Rights Explorer",
-            "Legal Problem Analyzer",
-            "Complaint Generator",
-            "Legal Simplifier",
-            "RAG Legal Assistant"
+            "Home Dashboard",
+            "Browse Your Rights",
+            "Problem Analyzer & Helper",
+            "Letter & Complaint Draft Generator",
+            "Document Language Simplifier",
+            "Smart Legal Question AI"
         ]
     )
     
-    # NEW THEMATIC FEATURE: Instant Sidebar Legal Dictionary Reference Widget
+    # EXPANDED THEMATIC FEATURE: Dictionary Reference Widget (+10 Terms, 15 Total)
     st.markdown("---")
     st.markdown('<p style="font-weight:600; color:#8b949e; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px;">Jargon Helper</p>', unsafe_allow_html=True)
     jargon_terms = {
-        "Pro Se": "Representing oneself in a court without a certified attorney.",
-        "Injunction": "A judicial order restraining a party from beginning or continuing an action.",
-        "Tort": "A wrongful act or an infringement of a right leading to civil legal liability.",
-        "Affidavit": "A written statement confirmed by oath or affirmation, for use as evidence in court.",
-        "Statute": "A written law passed by a legislative body."
+        "Pro Se": "Representing yourself in a court case without hiring a private lawyer.",
+        "Injunction": "A court order that forces someone to stop doing something harmful right away.",
+        "Tort": "A civil mistake or wrongdoing that causes harm to someone, resulting in legal liability.",
+        "Affidavit": "A signed statement of facts made under oath that can be used as proof in a court.",
+        "Statute": "A formal written law passed by a legislative assembly or government body.",
+        "Plaintiff": "The person or party who starts a lawsuit by filing a complaint against someone else.",
+        "Defendant": "The person or group being blamed or sued in a court case.",
+        "Subpoena": "An official written request forcing someone to attend court or hand over evidence.",
+        "Lien": "A legal claim or right against a piece of property until a debt is fully paid off.",
+        "Amicus Curiae": "An outside expert or advisor who helps a court by providing extra knowledge on a case.",
+        "Liable": "Legally responsible or to blame for paying or fixing a mistake.",
+        "Malfeasance": "Illegal or intentionally wrong behavior, especially by a public official or company.",
+        "Arbitration": "Settling a dispute out of court using an independent third person instead of a judge.",
+        "Power of Attorney": "Legal permission given to someone else to act or sign documents on your behalf.",
+        "Ex Parte": "A legal action or meeting done for or by one party without the other party being present."
     }
     selected_term = st.selectbox("Quick Dictionary Look-up", list(jargon_terms.keys()))
     st.caption(jargon_terms[selected_term])
 
 # =====================================================
-# MODULE 1: HOME
+# MODULE 1: HOME DASHBOARD
 # =====================================================
 
-if page == "Home":
+if page == "Home Dashboard":
     st.markdown('<h1 class="gradient-text" style="font-size: 3rem; margin-bottom: 0px;">JusticePath</h1>', unsafe_allow_html=True)
-    st.markdown('<p style="font-size: 1.3rem; color: #8b949e; margin-top: 5px;">AI-Powered Legal Navigation and Awareness Framework</p>', unsafe_allow_html=True)
+    st.markdown('<p style="font-size: 1.3rem; color: #8b949e; margin-top: 5px;">Your Simple AI Tool to Understand Everyday Rights and Paperwork</p>', unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     
     with col1:
         st.markdown("""
         <div class="feature-card">
-            <h3 style="color: #58a6ff; margin-top:0;">Empowering Citizen Rights</h3>
-            <p style="color: #c9d1d9;">JusticePath bridges the gap between complex constitutional legal frameworks and everyday citizens, giving you tools to navigate unexpected legal problems easily.</p>
+            <h3 style="color: #58a6ff; margin-top:0;">Learn About Your Rights</h3>
+            <p style="color: #c9d1d9;">JusticePath clarifies confusing laws for regular citizens. Use these tools to figure out how to respond when a legal issue pops up:</p>
             <ul class="feature-list">
-                <li>Instantly query and filter constitutional and consumer rights.</li>
-                <li>Analyze real-world situations to extract clear legal categorization.</li>
-                <li>Identify exact governing authorities for faster reporting lines.</li>
+                <li>Search and view consumer, employee, and basic citizen rights.</li>
+                <li>Find out which office or authority handles your specific issue.</li>
+                <li>See what specific documents or receipts you need to save to stay safe.</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -465,73 +482,83 @@ if page == "Home":
     with col2:
         st.markdown("""
         <div class="feature-card">
-            <h3 style="color: #bc8cff; margin-top:0;">Automation Engine Capabilities</h3>
-            <p style="color: #c9d1d9;">Harness optimized intelligence features to bypass manual legal document processing stress:</p>
+            <h3 style="color: #bc8cff; margin-top:0;">Simplify Complex Paperwork</h3>
+            <p style="color: #c9d1d9;">Bypass difficult legal terms and quickly prepare the responses or questions you need:</p>
             <ul class="feature-list">
-                <li>Build structural action roadmaps instantly.</li>
-                <li>Auto-generate legal standard complaint letters seamlessly.</li>
-                <li>Deconstruct confusing dense legal paperwork into simple terms.</li>
-                <li>RAG-augmented answers grounded strictly in master knowledge base vectors.</li>
+                <li>Create step-by-step custom action roadmaps for your problems.</li>
+                <li>Auto-generate official complaint letters in plain text and PDF formats.</li>
+                <li>Turn confusing, long terms into easy bullet points using AI.</li>
+                <li>Ask custom questions answered directly from our stored master list database.</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("""
     <div class="disclaimer-text">
-        <strong>Disclaimer Notice:</strong> This software architecture platform provides educational, general knowledge resources compiled programmatically via retrieval models. It does not provide actionable legal representation, certified legal advice, or professional corporate counsel under judicial practice standards.
+        <strong>Important Note:</strong> This website offers educational summaries and helpful information. It is not a real lawyer, does not provide legal representation, and cannot give certified legal advice.
     </div>
     """, unsafe_allow_html=True)
 
 # =====================================================
-# MODULE 2: RIGHTS EXPLORER
+# MODULE 2: BROWSE YOUR RIGHTS
 # =====================================================
 
-elif page == "Rights Explorer":
-    st.markdown('<h1 class="gradient-text">Rights Explorer</h1>', unsafe_allow_html=True)
-    st.markdown("Select a legal category or use our interactive text-based indexed matching lookup database engine.")
+elif page == "Browse Your Rights":
+    st.markdown('<h1 class="gradient-text">Browse Your Rights</h1>', unsafe_allow_html=True)
+    st.markdown("Look up basic citizen rules, legal protections, and government offices using the simple filters below.")
     
-    # NEW THEMATIC FEATURE: Multi-Mode Browsing (Category Filter vs Global Search)
-    search_mode = st.radio("Choose Discovery Method", ["Browse By Focus Category", "Search Database by Keyword"], horizontal=True)
+    search_mode = st.radio("Choose How to Browse", ["Pick From a Category List", "Search by Text Keyword"], horizontal=True)
     
-    if search_mode == "Browse By Focus Category":
+    if search_mode == "Pick From a Category List":
         categories = get_categories()
-        selected_category = st.selectbox("Filter by Category Focus", categories)
+        selected_category = st.selectbox("Select a Topic to View", categories)
         rights = get_rights_by_category(selected_category)
     else:
-        query_word = st.text_input("Enter law name, phrase, or topic keyword:", placeholder="Ex: Information Technology Act, Tenant, UPI...")
+        query_word = st.text_input("Type a keyword or topic:", placeholder="Ex: internet fraud, landlord dispute, refund...")
         rights = search_rights(query_word) if query_word.strip() else rights_data
 
     st.markdown("---")
     
     if not rights:
-        st.info("No matching codified articles found inside database indices.")
+        st.info("No matching rules found in the database. Try using simpler words.")
     else:
         for item in rights:
-            # FIXED: Removed raw markdown/HTML mix from expander header string argument to prevent syntax exposure
-            with st.expander(f"Right Focus: {item['right_name']}", expanded=False):
-                st.markdown(f"**Description:** \n{item['description']}")
-                
-                # FIXED: Render raw HTML inside independent secure stream markdown calls using unified parameters
-                st.markdown(f"**Primary Enforcement Authority:** <span class='authority-badge'>{item['authority']}</span>", unsafe_allow_html=True)
+            with st.expander(f"Protection Topic: {item['right_name']}", expanded=False):
+                st.markdown(f"**What this means:** \n{item['description']}")
+                st.markdown(f"**Who handles this office:** <span class='authority-badge'>{item['authority']}</span>", unsafe_allow_html=True)
                 
                 if "laws" in item and item["laws"]:
-                    st.markdown("<p style='margin-bottom:2px; margin-top:10px; font-weight:600;'>Statutory Frameworks and Laws:</p>", unsafe_allow_html=True)
+                    st.markdown("<p style='margin-bottom:2px; margin-top:10px; font-weight:600;'>Official Laws Related to This:</p>", unsafe_allow_html=True)
                     for law in item["laws"]:
                         st.markdown(f"<span class='legal-badge'>{law}</span>", unsafe_allow_html=True)
 
 # =====================================================
-# MODULE 3: LEGAL PROBLEM ANALYZER
+# MODULE 3: PROBLEM ANALYZER & HELPER
 # =====================================================
 
-elif page == "Legal Problem Analyzer":
-    st.markdown('<h1 class="gradient-text">Legal Problem Analyzer</h1>', unsafe_allow_html=True)
-    st.markdown("Input your current circumstances or problem details below. The heuristic model will classify the focus and generate structured preparation strategies.")
+elif page == "Problem Analyzer & Helper":
+    st.markdown('<h1 class="gradient-text">Problem Analyzer and Action Helper</h1>', unsafe_allow_html=True)
+    st.markdown("Describe what happened to check your category focus, find where to go, and see what documents you should collect.")
 
-    issue = st.text_area("Describe the dispute context or incident thoroughly:", placeholder="Example: My landlord is forcing immediate eviction notice without paying back security deposits...")
+    # BRAND NEW FEATURE: Preset Dropdown Helper Examples for Naive Users
+    st.markdown("**Need help starting? Choose a common scenario example below, or write your own custom case text:**")
+    preset_example = st.selectbox(
+        "Optional: Click here to view sample scenarios",
+        [
+            "Custom (Write your own description below)",
+            "An online store took my money but never shipped my order or gave a refund.",
+            "My boss is withholding my monthly salary and threatening termination without cause.",
+            "My landlord is keeping my security deposit and forcing immediate eviction without notice.",
+            "I received a fake UPI payment scam text and lost money from my bank account."
+        ]
+    )
+
+    default_text = "" if preset_example.startswith("Custom") else preset_example
+    issue = st.text_area("Type your situation details here:", value=default_text, placeholder="Write what happened in your own words...")
     
-    if st.button("Execute Diagnostic Analysis", type="primary"):
+    if st.button("Analyze My Issue", type="primary"):
         if issue.strip():
-            with st.spinner("Classifying contexts and generating roadmaps..."):
+            with st.spinner("Reviewing your details..."):
                 category = classify_issue(issue)
                 evidence = generate_evidence_checklist(issue)
                 authorities = find_relevant_authorities(issue)
@@ -539,118 +566,127 @@ elif page == "Legal Problem Analyzer":
                 
             st.toast("Analysis Completed Successfully!")
             
-            # NEW THEMATIC FEATURE: Case Metric & SLA Tracking Matrix Block
             m1, m2, m3 = st.columns(3)
             with m1:
-                st.metric(label="Jurisdiction Context", value=category.split()[0] if " " in category else category)
+                st.metric(label="Problem Category Type", value=category.split()[0] if " " in category else category)
             with m2:
-                st.metric(label="Estimated Complexity Tier", value="Tier 2 (Standard)")
+                st.metric(label="Estimated Case Severity", value="Standard Review")
             with m3:
-                st.metric(label="Avg Authority Response SLA", value="15-30 Business Days")
+                st.metric(label="Typical Handling Window", value="15-30 Open Days")
                 
             st.markdown("---")
             
             col_left, col_right = st.columns([1, 2])
             with col_left:
-                st.markdown("### Classified Category")
+                st.markdown("### 🏛️ Main Category")
                 st.info(category)
                 
-                st.markdown("### Relevant Authorities")
+                st.markdown("### 🏢 Where to File This")
                 for item in authorities:
                     st.markdown(f"**{item}**")
             
             with col_right:
-                tab1, tab2 = st.tabs(["Vital Evidence Checklist", "Action Roadmap"])
+                tab1, tab2 = st.tabs(["Proof Items to Keep", "Your Next Action Steps"])
                 
                 with tab1:
-                    st.markdown("Ensure you collect and safeguard the following records:")
+                    st.markdown("Make sure to hold onto these items to protect your claim:")
                     for item in evidence:
                         st.checkbox(item, key=f"ev_{item}")
                         
                 with tab2:
-                    st.markdown("Recommended linear resolution steps:")
+                    st.markdown("Follow these steps to resolve your issue:")
                     for idx, item in enumerate(roadmap, 1):
                         st.markdown(f"**Step {idx}:** {item}")
         else:
-            st.warning("Please type some case details before initializing analysis workflows.")
+            st.warning("Please type or select an issue description first.")
 
 # =====================================================
-# MODULE 4: COMPLAINT GENERATOR
+# MODULE 4: LETTER & COMPLAINT DRAFT GENERATOR
 # =====================================================
 
-elif page == "Complaint Generator":
-    st.markdown('<h1 class="gradient-text">Formal Complaint Generator</h1>', unsafe_allow_html=True)
-    st.markdown("Draft structured legal complaint templates automatically according to your specific grievance variables.")
+elif page == "Letter & Complaint Draft Generator":
+    st.markdown('<h1 class="gradient-text">Letter and Complaint Draft Generator</h1>', unsafe_allow_html=True)
+    st.markdown("Turn your problem statement into a properly formatted official document or letter ready to send.")
 
-    issue = st.text_area("Provide specific details for the complaint draft:", placeholder="Example: Defective transmission delivered on ecommerce invoice order...")
+    issue = st.text_area("What is the complaint about?", placeholder="Write the details here...")
     
-    if st.button("Generate Document Package", type="primary"):
+    # BRAND NEW FEATURE: Interactive Customizer Overlays for Official Formatting
+    st.markdown("### Personalize Document Details")
+    cx1, cx2, cx3 = st.columns(3)
+    with cx1:
+        user_name = st.text_input("Your Full Name:", value="Citizen Name")
+    with cx2:
+        curr_date = st.text_input("Today's Date:", value="June 18, 2026")
+    with cx3:
+        user_contact = st.text_input("Your Phone or Email (Optional):", placeholder="Ex: email@example.com")
+
+    if st.button("Generate Downloadable Draft Package", type="primary"):
         if issue.strip():
-            with st.spinner("Drafting standard grievance templates..."):
-                complaint = generate_complaint(issue)
+            with st.spinner("Drafting your document..."):
+                complaint = generate_complaint(issue, citizen_name=user_name, date_str=curr_date, contact_info=user_contact)
                 pdf_file = export_complaint_pdf(complaint)
             
-            st.subheader("Generated Grievance Correspondence")
-            st.text_area("Draft Output Preview", complaint, height=350)
+            st.subheader("Your Generated Letter Preview")
+            st.text_area("Review your document text below:", complaint, height=350)
             
             with open(pdf_file, "rb") as file:
                 st.download_button(
-                    label="Download Ready-To-Print PDF Document",
+                    label="Download and Print Document PDF",
                     data=file,
-                    file_name="JusticePath_Official_Complaint.pdf",
+                    file_name="JusticePath_Official_Grievance.pdf",
                     mime="application/pdf",
                     use_container_width=True
                 )
         else:
-            st.warning("Grievance context field cannot be left blank.")
+            st.warning("Please explain what the complaint is about before creating the file.")
 
 # =====================================================
-# MODULE 5: LEGAL SIMPLIFIER
+# MODULE 5: DOCUMENT LANGUAGE SIMPLIFIER
 # =====================================================
 
-elif page == "Legal Simplifier":
-    st.markdown('<h1 class="gradient-text">Legal Language Simplifier</h1>', unsafe_allow_html=True)
-    st.markdown("Deconstruct dense multi-layered legal terminology or regulatory briefs into scannable clear takeaways instantly.")
+elif page == "Document Language Simplifier":
+    st.markdown('<h1 class="gradient-text">Document Language Simplifier</h1>', unsafe_allow_html=True)
+    st.markdown("Paste or upload confusing legal contracts, updates, or articles to turn them into easy bullet points.")
 
     u1, u2 = st.columns(2)
     with u1:
-        uploaded_file = st.file_uploader("Option A: Upload Source PDF File Document", type=["pdf"])
+        uploaded_file = st.file_uploader("Option 1: Upload a PDF document", type=["pdf"])
     with u2:
-        pasted_text = st.text_area("Option B: Paste Raw Legal Contracts or Clauses here", height=125)
+        pasted_text = st.text_area("Option 2: Paste difficult text here instead", height=125)
 
-    if st.button("Simplify Language Structure", type="primary"):
+    if st.button("Simplify This Text", type="primary"):
         text = ""
         if uploaded_file:
-            with st.spinner("Parsing PDF content matrices..."):
+            with st.spinner("Reading your PDF file..."):
                 text = read_pdf_text(uploaded_file)
         elif pasted_text:
             text = pasted_text
             
         if text:
-            with st.spinner("Processing plain language transcription..."):
+            with st.spinner("Converting into simple words..."):
                 result = simplify_legal_text(text)
                 
-            st.markdown("### Translated Plain English Summary")
+            st.markdown("### Easy English Summary Explanation")
             st.markdown(f'<div class="feature-card">{result}</div>', unsafe_allow_html=True)
         else:
-            st.error("Please supply text variables through either the file upload utility or copy-paste field parameters.")
+            st.error("Please add text by uploading a PDF file or pasting text directly.")
 
 # =====================================================
-# MODULE 6: RAG LEGAL ASSISTANT
+# MODULE 6: SMART LEGAL QUESTION AI
 # =====================================================
 
-elif page == "RAG Legal Assistant":
-    st.markdown('<h1 class="gradient-text">Vector-Grounded RAG Legal Assistant</h1>', unsafe_allow_html=True)
-    st.markdown("Query the active context vectors seamlessly. Answers are mapped directly to corresponding database elements to guarantee validation accuracy.")
+elif page == "Smart Legal Question AI":
+    st.markdown('<h1 class="gradient-text">Smart Legal Question AI</h1>', unsafe_allow_html=True)
+    st.markdown("Ask an open-ended question about rules, processes, or consumer guidelines. The AI will answer based on our stored master laws.")
 
-    query = st.text_input("Enter your direct legal query:", placeholder="Example: What fallback options exist if an online portal scams payment profiles?")
+    query = st.text_input("Ask your question here:", placeholder="Example: What happens if an online site refuses to take back a broken product?")
     
-    if st.button("Query Knowledge Vectors", type="primary"):
+    if st.button("Get My Answer Summary", type="primary"):
         if query.strip():
-            with st.spinner("Scanning dense FAISS index vectors and computing contextual frames..."):
+            with st.spinner("Checking our master guidelines database..."):
                 answer = rag_legal_analyzer(query)
                 
-            st.markdown("### System Response Guidance")
+            st.markdown("### Explanatory AI Guidance Answer")
             st.markdown(f'<div class="feature-card" style="border-left: 4px solid #58a6ff;">{answer}</div>', unsafe_allow_html=True)
         else:
-            st.warning("Please type a clear operational question phrase.")
+            st.warning("Please write a question phrase first.")
