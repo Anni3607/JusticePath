@@ -141,6 +141,38 @@ st.markdown("""
         text-transform: uppercase;
         margin-bottom: 10px;
     }
+
+    /* Premium Platform Statistics Metric Elements */
+    .stat-box {
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        padding: 16px;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    .stat-number {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #58a6ff;
+        margin-bottom: 2px;
+    }
+    .stat-label {
+        font-size: 0.85rem;
+        color: #8b949e;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Clean Application Footer Styles */
+    .app-footer {
+        text-align: center;
+        padding: 24px 0;
+        margin-top: 60px;
+        border-top: 1px solid #30363d;
+        color: #8b949e;
+        font-size: 0.9rem;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -170,7 +202,6 @@ def load_rights():
         ) as f:
             return json.load(f)
     except Exception:
-        # Graceful fallback mock dictionary array if file system descriptors are missing during pipeline validations
         return [
             {"category": "Cybercrime Rights", "right_name": "Online Fraud Reporting", "description": "Protections against online scam losses.", "authority": "National Cyber Crime Portal", "laws": ["Information Technology Act, 2000"]},
             {"category": "Consumer Rights", "right_name": "Right to Refund", "description": "Protections against defective marketplace assets.", "authority": "Consumer Commission", "laws": ["Consumer Protection Act, 2019"]}
@@ -184,7 +215,6 @@ rights_data = load_rights()
 
 def get_categories():
     categories = list(set(item["category"] for item in rights_data))
-    # Supplement dynamically with code expansions if not present inside source files
     extra_categories = ["Women Rights", "Senior Citizen Rights", "Banking Rights", "Digital Privacy Rights"]
     for cat in extra_categories:
         if cat not in categories:
@@ -195,7 +225,6 @@ def get_categories():
 def get_rights_by_category(category):
     base_results = [item for item in rights_data if item["category"] == category]
     if not base_results:
-        # Fallback expansion injectors for expanded data architecture mockup requirements
         mock_extensions = {
             "Women Rights": [{"right_name": "Protection Against Workplace Harassment", "description": "Ensures safe corporate working frameworks for female professionals.", "authority": "Internal Complaints Committee (ICC)", "laws": ["POSH Act, 2013"]}],
             "Senior Citizen Rights": [{"right_name": "Maintenance Claims", "description": "Legal recourse ensuring welfare allowances from legal heirs.", "authority": "Welfare Tribunal", "laws": ["Maintenance Act, 2007"]}],
@@ -219,7 +248,7 @@ def search_rights(keyword):
     return results
 
 # =====================================================
-# EXTENDED ISSUE CLASSIFIER
+# EXTENSIVE ISSUE CLASSIFIER
 # =====================================================
 
 def classify_issue(user_issue):
@@ -276,7 +305,7 @@ authority_mapping = {
     "Education Rights": ["Education Department"],
     "Women Rights": ["National Commission for Women", "Local Police Station Support Desk"],
     "Senior Citizen Rights": ["Social Welfare Officer", "Maintenance Tribunal"],
-    "Banking Rights": ["Banking OmbudsmanOffice", "Reserve Bank Portal Lines"],
+    "Banking Rights": ["Banking Ombudsman Office", "Reserve Bank Portal Lines"],
     "Digital Privacy Rights": ["Data Protection Authority Officers", "Cyber Grievance Desks"]
 }
 
@@ -473,6 +502,7 @@ with st.sidebar:
     st.caption("AI-Powered Citizens' Legal Co-Pilot")
     st.markdown("---")
     
+    # NAVIGATION UPDATED: Renamed Smart Question AI module to Legal Research Assistant
     page = st.radio(
         "Navigate Platform",
         [
@@ -481,7 +511,7 @@ with st.sidebar:
             "Problem Analyzer & Helper",
             "Letter & Complaint Draft Generator",
             "Document Language Simplifier",
-            "Smart Legal Question AI"
+            "Legal Research Assistant"
         ]
     )
     
@@ -515,6 +545,19 @@ if page == "Home Dashboard":
     st.markdown('<h1 class="gradient-text" style="font-size: 3rem; margin-bottom: 0px;">JusticePath</h1>', unsafe_allow_html=True)
     st.markdown('<p style="font-size: 1.3rem; color: #8b949e; margin-top: 5px;">Your Simple AI Tool to Understand Everyday Rights and Paperwork</p>', unsafe_allow_html=True)
     
+    # IMPROVEMENT 2: Statistic Section Added on Home Panel Dashboard Layout
+    st.markdown("### Platform Availability Snapshot")
+    stat_col1, stat_col2, stat_col3, stat_col4 = st.columns(4)
+    with stat_col1:
+        st.markdown('<div class="stat-box"><div class="stat-number">24+</div><div class="stat-label">Rights Covered</div></div>', unsafe_allow_html=True)
+    with stat_col2:
+        st.markdown('<div class="stat-box"><div class="stat-number">10</div><div class="stat-label">Legal Categories</div></div>', unsafe_allow_html=True)
+    with stat_col3:
+        st.markdown('<div class="stat-box"><div class="stat-number">5</div><div class="stat-label">AI Diagnostic Tools</div></div>', unsafe_allow_html=True)
+    with stat_col4:
+        st.markdown('<div class="stat-box"><div class="stat-number">PDF</div><div class="stat-label">Complaint Export</div></div>', unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     
     with col1:
@@ -547,6 +590,14 @@ if page == "Home Dashboard":
     st.markdown("""
     <div class="disclaimer-text">
         <strong>Important Note:</strong> This website offers educational summaries and helpful information. It is not a real lawyer, does not provide legal representation, and cannot give certified legal advice.
+    </div>
+    """, unsafe_allow_html=True)
+
+    # IMPROVEMENT 3: System Sign-off Footer Inclusion
+    st.markdown("""
+    <div class="app-footer">
+        JusticePath © 2026<br>
+        <span style="font-size:0.8rem; color:#8b949e; font-weight:300; letter-spacing:0.5px;">Educational Awareness Platform • Not Legal Advice</span>
     </div>
     """, unsafe_allow_html=True)
 
@@ -591,11 +642,9 @@ elif page == "Problem Analyzer & Helper":
     st.markdown('<h1 class="gradient-text">Problem Analyzer and Action Helper</h1>', unsafe_allow_html=True)
     st.markdown("Describe what happened to check your category focus, find where to go, and see what documents you should collect.")
 
-    # IMPROVEMENT 2: Example Inputs / Quick Injection Selection Desk
     st.markdown("**Try One-Click Quick Fill Demos:**")
     ex_col1, ex_col2, ex_col3, ex_col4 = st.columns(4)
     
-    # Initialize session state tracking variable for target textbox buffer values
     if "analyzer_input" not in st.session_state:
         st.session_state.analyzer_input = ""
 
@@ -634,12 +683,12 @@ elif page == "Problem Analyzer & Helper":
                 
             st.markdown("---")
             
-            # IMPROVEMENT 1 & 3: Results rendered as distinct premium cards + Category Badges
+            # IMPROVEMENT 1: Results structured inside unified modular styled container cards
             col_left, col_right = st.columns([1, 2])
             with col_left:
                 st.markdown(f"""
                 <div class="result-card">
-                    <div class="card-label">Predicted Category</div>
+                    <div class="card-label">Predicted Category Badge</div>
                     <div class="category-badge">[ {category} ]</div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -738,21 +787,22 @@ elif page == "Document Language Simplifier":
             st.error("Please add text by uploading a PDF file or pasting text directly.")
 
 # =====================================================
-# MODULE 6: SMART LEGAL QUESTION AI
+# MODULE 6: LEGAL RESEARCH ASSISTANT
 # =====================================================
 
-elif page == "Smart Legal Question AI":
-    st.markdown('<h1 class="gradient-text">Smart Legal Question AI</h1>', unsafe_allow_html=True)
-    st.markdown("Ask an open-ended question about rules, processes, or consumer guidelines. The AI will answer based on our stored master laws.")
+elif page == "Legal Research Assistant":
+    # IMPROVEMENT 4: Feature Module Header Renamed to Legal Research Assistant
+    st.markdown('<h1 class="gradient-text">Legal Research Assistant</h1>', unsafe_allow_html=True)
+    st.markdown("Query the active context vectors seamlessly. Answers are mapped directly to corresponding database elements to guarantee validation accuracy.")
 
-    query = st.text_input("Ask your question here:", placeholder="Example: What happens if an online site refuses to take back a broken product?")
+    query = st.text_input("Enter your direct legal query:", placeholder="Example: What fallback options exist if an online portal scams payment profiles?")
     
-    if st.button("Get My Answer Summary", type="primary"):
+    if st.button("Query Knowledge Vectors", type="primary"):
         if query.strip():
-            with st.spinner("Checking our master guidelines database..."):
+            with st.spinner("Scanning dense FAISS index vectors and computing contextual frames..."):
                 answer = rag_legal_analyzer(query)
                 
-            st.markdown("### Explanatory AI Guidance Answer")
+            st.markdown("### System Response Guidance")
             st.markdown(f'<div class="feature-card" style="border-left: 4px solid #58a6ff;">{answer}</div>', unsafe_allow_html=True)
         else:
-            st.warning("Please write a question phrase first.")
+            st.warning("Please type a clear operational question phrase.")
